@@ -1,5 +1,5 @@
 ---
-title: "INFO-550: Homework 3"
+title: "INFO-550: Data Analysis Report"
 author: "Shauna McManus"
 date: "`r format(Sys.Date(), '%Y-%m-%d')`"
 output: html_document
