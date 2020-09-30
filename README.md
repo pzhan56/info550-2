@@ -14,7 +14,7 @@ for(p in pkgs){
 }
 ```
 ## Execute the analysis
-To execute the analysis, download "muse_randomized.csv". From the project folder you can run 
+To execute the analysis, you can run:
 ``` bash
 Rscript -e "rmarkdown::render('info550.Rmd')"
 ```
