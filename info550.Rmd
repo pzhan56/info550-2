@@ -1,0 +1,204 @@
+---
+title: "INFO-550: Homework 3"
+author: "Shauna McManus"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output: html_document
+highlight: "breezedark"
+---
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
+Within the Water, Sanitation, and Hygiene (WASH) sector, the role of women and girls in household WASH provision is well-documented. However, there are limited data on how and to what extent WASH conditions, interventions, and policies impact women’s empowerment, limited data on the extent to which women’s empowerment impacts WASH conditions, and no existing WASH-specific measures to assess empowerment.
+
+&nbsp;
+
+The MUSE project, with funding from the Bill and Melinda Gates Foundation, aims to develop and validate measures of women’s sanitation-related empowerment, focusing specifically on urban contexts. As part of the validation efforts, the survey contains several measures of mental health, including the PHQ-4 which includes thresholds for identifying whether someone is at risk for clinical levels of anxiety and clinical levels of depression.
+
+&nbsp;
+
+```{r,echo=FALSE,include=FALSE}
+##########################
+# Load Relevent Packages #
+##########################
+library(ggplot2)
+library(dplyr)
+library(wesanderson)
+```
+
+```{r,echo=FALSE}
+#############
+# Load Data #
+#############
+# Load full data set
+data.f = read.csv("muse.csv")
+
+###############
+# Score PHQ-4 #
+###############
+# Note 1: Missing value codes 66/77/88/99
+# Note 2: HV07, HV08 (2-item anx.); HV09, HV10 (2-item dep.)
+
+# Set missing values to system missing
+data.f$HV07[data.f$HV07==66] <- NA
+data.f$HV07[data.f$HV07==77] <- NA
+data.f$HV07[data.f$HV07==88] <- NA
+data.f$HV07[data.f$HV07==99] <- NA
+data.f$HV08[data.f$HV08==66] <- NA
+data.f$HV08[data.f$HV08==77] <- NA
+data.f$HV08[data.f$HV08==88] <- NA
+data.f$HV08[data.f$HV08==99] <- NA
+data.f$HV09[data.f$HV09==66] <- NA
+data.f$HV09[data.f$HV09==77] <- NA
+data.f$HV09[data.f$HV09==88] <- NA
+data.f$HV09[data.f$HV09==99] <- NA
+data.f$HV10[data.f$HV10==66] <- NA
+data.f$HV10[data.f$HV10==77] <- NA
+data.f$HV10[data.f$HV10==88] <- NA
+data.f$HV10[data.f$HV10==99] <- NA
+
+# NOTE: data was coded as 1-4 instead of 0-3
+# Recode data for accurate scoring
+data.f$HV07.corrected<-NA
+data.f$HV08.corrected<-NA
+data.f$HV09.corrected<-NA
+data.f$HV10.corrected<-NA
+data.f$HV07.corrected[data.f$HV07 == 1] <- 0
+data.f$HV07.corrected[data.f$HV07 == 2] <- 1
+data.f$HV07.corrected[data.f$HV07 == 3] <- 2
+data.f$HV07.corrected[data.f$HV07 == 4] <- 3
+data.f$HV08.corrected[data.f$HV08 == 1] <- 0
+data.f$HV08.corrected[data.f$HV08 == 2] <- 1
+data.f$HV08.corrected[data.f$HV08 == 3] <- 2
+data.f$HV08.corrected[data.f$HV08 == 4] <- 3
+data.f$HV09.corrected[data.f$HV09 == 1] <- 0
+data.f$HV09.corrected[data.f$HV09 == 2] <- 1
+data.f$HV09.corrected[data.f$HV09 == 3] <- 2
+data.f$HV09.corrected[data.f$HV09 == 4] <- 3
+data.f$HV10.corrected[data.f$HV10 == 1] <- 0
+data.f$HV10.corrected[data.f$HV10 == 2] <- 1
+data.f$HV10.corrected[data.f$HV10 == 3] <- 2
+data.f$HV10.corrected[data.f$HV10 == 4] <- 3
+
+# Score
+# Restrict to only those with full data
+data.f$PHQ4.t<-data.f$HV07.corrected+data.f$HV08.corrected+data.f$HV09.corrected+data.f$HV10.corrected
+data.f$PHQ4.a<-data.f$HV07.corrected+data.f$HV08.corrected
+data.f$PHQ4.d<-data.f$HV09.corrected+data.f$HV10.corrected
+
+#####################
+# Subset by Country #
+#####################
+data.IN=data.f[data.f$SCR02==2,]
+data.UG=data.f[data.f$SCR02==1,]
+
+###############
+# Sample Size #
+###############
+X=nrow(data.f)
+Y=nrow(data.IN)
+Z=nrow(data.UG)
+```
+
+Data was collected in both India and Uganda. Overall, the full data set has `r X ` observations, with `r Y ` observations from India and `r Z ` observations from Uganda.
+
+&nbsp;
+
+The PHQ-4 full scale (potential score range: 0-12), depression subscale (potential score range: 0-6), and anxiety subscale (potential score range: 0-6) were scored and descriptive statistics were run with the full sample, and country-specific samples. A summary of descriptives statistics are found below.
+
+&nbsp;
+
+```{r,echo=FALSE}
+######################################
+# Make Tables with Sample Statistics #
+######################################
+
+## FULL SAMPLE
+# PHQ4 (Total Score)
+ot<-array(summary(data.f$PHQ4.t))
+# PHQ4-A (Anxiety Subscale Score)
+at<-array(summary(data.f$PHQ4.a))
+# PHQ4-D (Depression Subscale Score)
+dt<-array(summary(data.f$PHQ4.d))
+
+tt<-Reduce(rbind,data.frame(ot,at,dt))
+row.names(tt) <- c("Overall", "Anxiety Subscale", "Depression Subscale")
+
+knitr::kable(tt,format="pipe",digits=2,col.names=c("Minimum","1st Quartile","Median","Mean","3rd Quartile","Maximum","Missing Values"), caption="Summary statistics for the PHQ4, PHQ4-A, and PHQ4-D for the full sample", align="c")
+
+## INDIA
+# PHQ4 (Total Score)
+oi<-array(summary(data.IN$PHQ4.t))
+# PHQ4-A (Anxiety Subscale Score)
+ai<-array(summary(data.IN$PHQ4.a))
+# PHQ4-D (Depression Subscale Score)
+di<-array(summary(data.IN$PHQ4.d))
+
+ti<-Reduce(rbind,data.frame(oi,ai,di))
+row.names(ti) <- c("Overall", "Anxiety Subscale", "Depression Subscale")
+
+knitr::kable(ti,format="pipe",digits=2,col.names=c("Minimum","1st Quartile","Median","Mean","3rd Quartile","Maximum","Missing Values"), caption="Summary statistics for the PHQ4, PHQ4-A, and PHQ4-D for Indian participants", align="c")
+
+
+## UGANDA
+# PHQ4 (Total Score)
+ou<-array(summary(data.UG$PHQ4.t))
+# PHQ4-A (Anxiety Subscale Score)
+au<-array(summary(data.UG$PHQ4.a))
+# PHQ4-D (Depression Subscale Score)
+du<-array(summary(data.UG$PHQ4.d))
+
+tu<-Reduce(rbind,data.frame(ou,au,du))
+row.names(tu) <- c("Overall", "Anxiety Subscale", "Depression Subscale")
+
+knitr::kable(tu,format="pipe",digits=2,col.names=c("Minimum","1st Quartile","Median","Mean","3rd Quartile","Maximum","Missing Values"), caption="Summary statistics for the PHQ4, PHQ4-A, and PHQ4-D for Ugandan participants", align="c")
+```
+
+Further, binary risk scores can be calculated from the anxiety and depression subscales. For each subscale, a score greater than or equal to 3 is considered indicative of the participant being at risk for clinically significant levels of anxiety or depression. Risk scores were determined for participants in each country, and can be seen below.
+
+&nbsp;
+
+In Uganda, 26.9% of participants were at risk for clinically significant depression, while in India, 50.9% of participants were at risk.
+
+&nbsp;
+
+```{r, echo=FALSE}
+####################################
+# Make Plots of Binary Risk Scores #
+####################################
+# Binary risk scores
+# Anxiety
+data.f$a.risk<- ifelse(data.f$PHQ4.a >= 3,1,0)
+# Depression
+data.f$d.risk<- ifelse(data.f$PHQ4.d >= 3,1,0)
+
+data.f$SCR02 <- factor(data.f$SCR02, levels=c(1,2), labels=c("Uganda","India"))
+data.f$d.risk <- factor(data.f$d.risk, levels=c(0,1), labels=c("Not at Risk","At Risk"))
+data.f$a.risk <- factor(data.f$a.risk, levels=c(0,1), labels=c("Not at Risk","At Risk"))
+
+dep<-na.omit(data.frame(data.f %>% group_by(SCR02) %>% count(d.risk)))
+anx<-na.omit(data.frame(data.f %>% group_by(SCR02) %>% count(a.risk)))
+```
+
+```{r, echo=FALSE}
+# Depression plot
+ggplot(dep, aes(fill=d.risk, y=n, x=SCR02)) + geom_bar(position="fill", stat="identity")+ggtitle("Proportion at Risk for Clinically Significant Levels of Depression")+xlab("Country") + ylab("Count")+labs(fill = "")+scale_fill_manual(values=wes_palette(name="GrandBudapest1"))
+```
+
+The proportion of participants at risk for anxiety was far more similar across countries, however, the proportion at risk remains higher in India than in Uganda. In Uganda, 32.9% of participants were at risk for clinically significant depression, while in India, 35.7% of participants were at risk.
+
+&nbsp;
+
+```{r, echo=FALSE}
+# Anxiety plot
+ggplot(anx, aes(fill=a.risk, y=n, x=SCR02)) + geom_bar(position="fill", stat="identity")+ggtitle("Proportion at Risk for Clinically Significant Levels of Anxiety")+xlab("Country") + ylab("Count")+labs(fill = "")+scale_fill_manual(values=wes_palette(name="GrandBudapest1"))
+```
+
+<!--
+Participation scores:
+Group members:
+Sodham (Robin) Yoo - 1
+Limeng Wan - 1
+Nanxi Guo - 1
+-->
