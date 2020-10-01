@@ -18,3 +18,4 @@ To execute the analysis, you can run:
 ``` bash
 Rscript -e "rmarkdown::render('info550.Rmd')"
 ```
+This will create a file called info550.html that contains the results.
