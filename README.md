@@ -5,7 +5,7 @@ For this project, I will analyze data collected by a research team I work with i
 To analyze the data you will need to install some `R` packages. The required packages can be installed using `R` commands.
 
 ``` r
-installed_pkgs <- row.names(installed.packages())
+install_pkgs <- row.names(installed.packages())
 pkgs <- c("ggplot2", "dplyr", "wesanderson")
 for(p in pkgs){
 	if(!(p %in% install_pkgs)){
