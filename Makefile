@@ -18,7 +18,7 @@ muse_randomized_scored.csv: R/score_PHQ4.R muse_randomized.csv
 	Rscript R/score_PHQ4.R
 
 # make install - rule for installing necessary R packages
-.PHONY: install
+install:
 	chmod +x R/install_packages.R && \
 	Rscript R/install_packages.R
 
