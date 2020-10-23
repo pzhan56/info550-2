@@ -1,19 +1,19 @@
 # make report - rule for making report  
-info550.html: muse_randomized_scored.csv fig1.png fig2.png info550.Rmd
+info550.html: muse_randomized_scored.csv Figure/fig1.png Figure/fig2.png info550.Rmd
 	Rscript -e "rmarkdown::render('info550.Rmd', quiet = TRUE)"
 
 # make fig2 - rule for making figure 2
-fig2.png: R/make_fig2.R muse_randomized_scored.csv
+Figure/fig2.png: R/make_fig2.R muse_randomized_scored.csv
 	chmod +x R/make_fig2.R && \
 	Rscript R/make_fig2.R
 
 # make fig1 - rule for making figure 1
-fig1.png: R/make_fig1.R muse_randomized_scored.csv
+Figure/fig1.png: R/make_fig1.R muse_randomized_scored.csv
 	chmod +x R/make_fig1.R && \
 	Rscript R/make_fig1.R
 
 # make score - rule for scoring PHQ-4 (full scake and subscales)
-muse_randomized_scored.csv: R/score_PHQ4.R muse_randomized.csv
+muse_randomized_scored.csv: R/score_PHQ4.R Raw_Data/muse_randomized.csv
 	chmod +x R/score_PHQ4.R && \
 	Rscript R/score_PHQ4.R
 
