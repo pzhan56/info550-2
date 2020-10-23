@@ -110,7 +110,7 @@ In Uganda, 26.9% of participants were at risk for clinically significant depress
 &nbsp;
 
 ```{r, echo=FALSE,out.width="60%", out.height="40%",fig.cap="",fig.show='hold',fig.align='left'}
-knitr::include_graphics(c("Figure/fig1.png"))
+knitr::include_graphics(c("Figures/fig1.png"))
 ``` 
 
 &nbsp;
@@ -120,5 +120,5 @@ The proportion of participants at risk for anxiety was far more similar across c
 &nbsp;
 
 ```{r, echo=FALSE,out.width="60%", out.height="40%",fig.cap="",fig.show='hold',fig.align='left'}
-knitr::include_graphics(c("Figure/fig1.png"))
+knitr::include_graphics(c("Figures/fig1.png"))
 ``` 
