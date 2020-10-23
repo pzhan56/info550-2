@@ -29,7 +29,7 @@ data.f$a.risk <- factor(data.f$a.risk, levels=c(0,1), labels=c("Not at Risk","At
 dep<-na.omit(data.frame(data.f %>% group_by(SCR02) %>% count(d.risk)))
 anx<-na.omit(data.frame(data.f %>% group_by(SCR02) %>% count(a.risk)))
 
-png("fig2.png")
+png("Figures/fig2.png")
 # Anxiety plot
 ggplot(anx, aes(fill=a.risk, y=n, x=SCR02)) + geom_bar(position="fill", stat="identity")+ggtitle("Proportion at Risk for Clinically Significant Levels of Anxiety")+xlab("Country") + ylab("Count")+labs(fill = "")+scale_fill_manual(values=wes_palette(name="GrandBudapest1"))
 dev.off()
