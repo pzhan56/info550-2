@@ -4,7 +4,7 @@
 # Load Data #
 #############
 # Load full data set
-data.f = read.csv("muse_randomized.csv")
+data.f = read.csv("Raw_Data/muse_randomized.csv")
 
 ###############
 # Score PHQ-4 #
