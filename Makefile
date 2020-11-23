@@ -1,6 +1,6 @@
 # make report
 report: muse_randomized_scored.csv Figures/fig1.png Figures/fig2.png report.Rmd
-	Rscript -e "rmarkdown::render('report.Rmd', output_file = 'Output/report.html')"
+	Rscript -e "rmarkdown::render('report.Rmd', output_dir= 'Output')"
 
 # make fig2 - rule for making figure 2
 Figures/fig2.png: R/make_fig2.R muse_randomized_scored.csv
