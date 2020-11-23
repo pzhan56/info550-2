@@ -8,7 +8,7 @@ library(dplyr)
 library(wesanderson)
 
 # Load full data set
-data.f = read.csv("muse_randomized_scored.csv")
+data.f = read.csv("muse_randomized_scored.csv", skipNul = TRUE)
 
 #####################
 # Subset by Country #
@@ -33,4 +33,3 @@ png("Figures/fig2.png")
 # Anxiety plot
 ggplot(anx, aes(fill=a.risk, y=n, x=SCR02)) + geom_bar(position="fill", stat="identity")+ggtitle("Proportion at Risk for Clinically Significant Levels of Anxiety")+xlab("Country") + ylab("Count")+labs(fill = "")+scale_fill_manual(values=wes_palette(name="GrandBudapest1"))
 dev.off()
-
