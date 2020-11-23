@@ -7,13 +7,13 @@ Data analysis will be run using `R`. All analyses can be run through the termina
 ## Execute the analysis
 To execute the analysis, you can follow 3 easy steps.
 
-1. First, fork and clone this repository to download all files locally to your computer.
+1. First, fork and clone this repository to download all files locally to your computer - the files should be in a folder called info550-master.
 
 2. Change your working directory in terminal to where the downloaded files are.
 
-3. While in the working directory from above, and execute the analysis using :
+3. While in the working directory from above, and execute the analysis using the following 2 commands. Note, you will need to change ~/info550-master to the file path to your info550-master folder
 ``` bash
 docker pull 35708b/info550:latest
-docker run -v /Users/Shauna/Desktop/Final_Test:/project/ 35708b/info550:latest
+docker run -v ~/info550-master:/project/ 35708b/info550:latest
 ```
 The container is not being run interactively, so it will run and then exit. Once you’ve exited the container, you should see a report.html in the Output folder.
