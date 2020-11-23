@@ -8,7 +8,7 @@ library(dplyr)
 library(wesanderson)
 
 # Load full data set
-data.f = read.csv("muse_randomized_scored.csv")
+data.f = read.csv("muse_randomized_scored.csv", skipNul = TRUE)
 
 #####################
 # Subset by Country #
